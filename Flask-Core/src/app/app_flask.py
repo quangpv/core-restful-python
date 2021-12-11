@@ -9,8 +9,8 @@ class AppFlask(BaseFlask):
 
 class AppController(Controller):
     def on_intercept(self, req: Request, res: Response):
-        if req.header("Authorization") is None:
-            return res.unauthor("Token fail")
+        # if req.header("Authorization") is None:
+        #     return res.unauthor("Token fail")
         return None
 
 

@@ -1,2 +1,0 @@
-class AppFile:
-    pass

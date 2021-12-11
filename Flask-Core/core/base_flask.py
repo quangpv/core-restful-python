@@ -1,5 +1,6 @@
 from typing import List, Any
 
+import qpvdi
 from flask import Flask, request
 
 from core.request import Request, Response
@@ -100,7 +101,8 @@ class BaseFlask(Flask):
         :param routes: controller class
         """
         for route in routes:
-            self.__router_cache[route.__name__] = route()
+            qpvdi.auto_single(route, route)
+            self.__router_cache[route.__name__] = qpvdi.get(route)
 
     def __declare(self, rule, validate: Validation, **options):
         def decorate(f):
@@ -125,8 +127,17 @@ class BaseFlask(Flask):
                         error = validate.validate(req)
                         if error is not None:
                             return res.bad_request(error)
-
-                    return f(f_self, req, res)
+                    annotations = getattr(f, "__annotations__", None)
+                    if annotations is None:
+                        return f(f_self)
+                    else:
+                        params = []
+                        for key in annotations:
+                            if annotations[key].__name__ == Request.__name__:
+                                params.append(req)
+                            else:
+                                params.append(res)
+                        return f(f_self, *params)
 
                 self.__link(path, callback, **options)
                 self.__save_path(path)

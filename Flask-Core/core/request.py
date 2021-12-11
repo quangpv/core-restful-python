@@ -10,9 +10,9 @@ class Response(object):
         :param value: payload data
         :return: response as bad request code 400
         """
-        return jsonify({
-            "error": value
-        }), 400
+        return {
+                   "error": value
+               }, 400
 
     @staticmethod
     def success(value):
@@ -20,9 +20,9 @@ class Response(object):
         :param value: payload data
         :return: response as success request code 200
         """
-        return jsonify({
-            "data": value
-        }), 200
+        return {
+                   "data": value
+               }, 200
 
     @staticmethod
     def unauthor(value):
@@ -31,9 +31,9 @@ class Response(object):
         :param value: payload data
         :return: response as un-authorize request code 401
         """
-        return jsonify({
-            "error": value
-        }), 401
+        return {
+                   "error": value
+               }, 401
 
 
 class Request(object):

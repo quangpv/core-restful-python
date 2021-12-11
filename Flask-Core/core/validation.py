@@ -60,10 +60,10 @@ class KeyInfo(object):
 
     def validate(self, value):
         if value is None:
-            return "Not found field {}".format(self.key)
+            return f"Not found field {self.key}"
 
         if not self.is_type_valid(value):
-            return "{} should be type of {}".format(self.key, self.type.__name__)
+            return f"{self.key} should be type of {self.type.__name__}"
 
         if self.constraint is not None:
             return self.constraint.validate(self.key, self.constraint.parse(value))
@@ -88,10 +88,10 @@ class Validation(object):
 
     def validate(self, req: Request):
         for key in self.keys:
-            typeKey = type(key)
-            if typeKey is KeyQuery:
+            type_key = type(key)
+            if type_key is KeyQuery:
                 result = req.query(key.key)
-            elif typeKey is KeyPath:
+            elif type_key is KeyPath:
                 result = req.path(key.key)
             else:
                 result = req.form(key.key)

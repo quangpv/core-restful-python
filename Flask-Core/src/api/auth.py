@@ -1,22 +1,25 @@
-from src.app.app_flask import app
-from src.app.app_validator import Validator
 from core.base_flask import Controller
 from core.request import Request, Response
 from core.validation import Validation
+from src.app.app_flask import app
+from src.app.app_validator import Validator
 
 
-class Authentication(Controller):
+class Auth(Controller):
+
+    def __init__(self):
+        pass
 
     @app.post("login", validate=Validation([
         Validator.email,
         Validator.password,
     ]))
-    def login(self, req: Request, res: Response):
-        return res.success("Login success")
+    def login(self, res: Response):
+        return res.success("login success")
 
     @app.post("registry", validate=Validation([
         Validator.email,
         Validator.password
     ]))
     def registry(self, req: Request, res: Response):
-        return res.success('{}\'s profile registered'.format(req.form("email")))
+        return res.success(f'{req.form("email")}\'s profile registered')
